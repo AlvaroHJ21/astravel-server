@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Mail\EmailVerification;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -13,6 +15,8 @@ class RegisterController extends Controller
         $user = User::create($request->validated());
 
         $token = $user->createToken('auth_token')->plainTextToken;
+
+        Mail::to($user->email)->send(new EmailVerification($user->email));
 
         $ok = true;
         $data = $user;
