@@ -22,7 +22,7 @@ class LoginController extends Controller
 
         $user = User::where("email", $request->email)->firstOrFail();
 
-        $token = $user->createToken("auth_token")->plainTextToken;
+        $token = $user->createToken("auth_token", [$request->remember ? "remember" : ""])->plainTextToken;
 
         $ok = true;
         $data = $user;
