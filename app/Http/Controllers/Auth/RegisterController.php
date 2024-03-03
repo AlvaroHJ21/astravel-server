@@ -20,7 +20,9 @@ class RegisterController extends Controller
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
-            Mail::to($user->email)->send(new EmailVerification($user->email));
+            if (env("MAIL_ENABLED")) {
+                Mail::to($user->email)->send(new EmailVerification($user->email));
+            }
 
             DB::commit();
 
